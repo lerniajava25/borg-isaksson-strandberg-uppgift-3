@@ -1,0 +1,4 @@
+org/example/petservice/service/PetService.class
+org/example/petservice/dto/PetDTO.class
+org/example/petservice/HelloResource.class
+org/example/petservice/HelloApplication.class
