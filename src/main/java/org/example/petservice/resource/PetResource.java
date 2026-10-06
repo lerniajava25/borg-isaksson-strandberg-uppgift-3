@@ -7,6 +7,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.example.petservice.dto.PetDTO;
 import org.example.petservice.service.PetService;
+import jakarta.ws.rs.core.Response;
 
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.PathParam;
@@ -41,8 +42,12 @@ public class PetResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public PetDTO createPet(PetDTO petDTO) {
-        return petService.createPet(petDTO);
+    public Response createPet(PetDTO petDTO) {
+        PetDTO createdPet = petService.createPet(petDTO);
+
+        return Response.status(Response.Status.CREATED)
+                .entity(createdPet)
+                .build();
     }
 
     @PUT

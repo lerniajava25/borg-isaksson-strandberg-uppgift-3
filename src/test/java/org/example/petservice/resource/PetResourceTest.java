@@ -1,15 +1,16 @@
+
 package org.example.petservice.resource;
 
+import jakarta.ws.rs.core.Response;
+import org.example.petservice.dto.PetDTO;
 import org.example.petservice.service.PetService;
 import org.junit.jupiter.api.BeforeEach;
-
-import org.example.petservice.dto.PetDTO;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.lang.reflect.Field;
 
 class PetResourceTest {
 
@@ -29,7 +30,11 @@ class PetResourceTest {
     void shouldCreatePet() {
         PetDTO pet = new PetDTO(null, "Bosse", "Dog", 50, 50);
 
-        PetDTO createdPet = petResource.createPet(pet);
+        Response response = petResource.createPet(pet);
+
+        assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
+
+        PetDTO createdPet = (PetDTO) response.getEntity();
 
         assertNotNull(createdPet.getId());
         assertEquals("Bosse", createdPet.getName());
@@ -47,8 +52,10 @@ class PetResourceTest {
 
     @Test
     void shouldGetPetById() {
-        PetDTO createdPet =
+        Response response =
                 petResource.createPet(new PetDTO(null, "Bosse", "Dog", 50, 50));
+
+        PetDTO createdPet = (PetDTO) response.getEntity();
 
         PetDTO foundPet = petResource.getPetById(createdPet.getId());
 
@@ -57,8 +64,10 @@ class PetResourceTest {
 
     @Test
     void shouldFeedPet() {
-        PetDTO createdPet =
+        Response response =
                 petResource.createPet(new PetDTO(null, "Bosse", "Dog", 50, 50));
+
+        PetDTO createdPet = (PetDTO) response.getEntity();
 
         PetDTO fedPet = petResource.feedPet(createdPet.getId());
 
@@ -67,8 +76,10 @@ class PetResourceTest {
 
     @Test
     void shouldPlayWithPet() {
-        PetDTO createdPet =
+        Response response =
                 petResource.createPet(new PetDTO(null, "Bosse", "Dog", 50, 50));
+
+        PetDTO createdPet = (PetDTO) response.getEntity();
 
         PetDTO playedPet = petResource.playWithPet(createdPet.getId());
 
@@ -77,15 +88,17 @@ class PetResourceTest {
 
     @Test
     void shouldDeletePet() {
-        PetDTO createdPet =
+        Response response =
                 petResource.createPet(new PetDTO(null, "Bosse", "Dog", 50, 50));
+
+        PetDTO createdPet = (PetDTO) response.getEntity();
 
         petResource.deletePet(createdPet.getId());
 
         assertEquals(0, petResource.getAllPets().size());
     }
-
 }
+
 
 
 
