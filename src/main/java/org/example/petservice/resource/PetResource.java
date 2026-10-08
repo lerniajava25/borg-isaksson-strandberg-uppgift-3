@@ -1,5 +1,6 @@
 package org.example.petservice.resource;
 
+import jakarta.validation.Valid;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -42,7 +43,7 @@ public class PetResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createPet(PetDTO petDTO) {
+    public Response createPet(@Valid PetDTO petDTO) {
         PetDTO createdPet = petService.createPet(petDTO);
 
         return Response.status(Response.Status.CREATED)
